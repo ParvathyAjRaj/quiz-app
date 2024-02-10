@@ -73,7 +73,10 @@ function App() {
 
   return (
     <div>
-      {isQuizOver ? <h1>Score : {score}/{questions.length}</h1> : ""}
+      {isQuizOver ? 
+      <h1>Score : {score}/{questions.length}</h1> 
+      : 
+      <div>
       {questions.map((eachQn,qnIndex) => {  
           return(
             <div>
@@ -90,6 +93,8 @@ function App() {
           )
       })}
        <button onClick={() => handleSubmit()}>Submit</button>
+       </div>
+    }
     </div>
   );
 }
