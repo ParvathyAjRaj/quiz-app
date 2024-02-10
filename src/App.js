@@ -61,7 +61,7 @@ function App() {
   const [selectedOption,setSelectedOption] = useState(null);
   const [isSetAlert,setAlert] = useState(false);
 
-  function handleSelect(eachOption,answer,optionIndex,e){
+  function handleSelect(eachOption,answer){
     setAlert(false);
     setSelectedOption(eachOption);
     if (eachOption === answer){
@@ -86,34 +86,40 @@ function App() {
   }
 
   function handleReload(){
+    // to reload the window
     window.location.reload();
   }
 
   return (
     <div>
       {isQuizOver ? 
-      <div>
+      <div className="result">
         <h1>Score : {score}/{questions.length}</h1> 
         <button onClick={handleReload}>Start over</button>
       </div>
       : 
       <div>
-        <h1>{questions[qnIndex].question}</h1>
+        <div className='questions'>
+         <h1 className='heading'>{qnIndex + 1}.{questions[qnIndex].question}</h1>
+        </div>
         {questions[qnIndex].options.map((option,optionIndex) => {
               return(
-              <div>
-               <label><input 
+              <div className='options'>
+               <label className='eachOption'><input
                type="radio" 
                name={qnIndex} 
                onChange={() => handleSelect(option,questions[qnIndex].answer,optionIndex)} 
                key={optionIndex} 
+              //  to avoid checking the option on going to next qn
                checked={selectedOption === option}/>
                 {option}</label>
               </div>
               )
               })}
-       <button onClick={() => handleSubmit(qnIndex)}>Submit</button>
-       {isSetAlert ? <h1>Please select an option</h1> : ""}
+        <div className="submitButton">
+          <button onClick={() => handleSubmit(qnIndex)}>Submit</button>
+        </div>
+       {isSetAlert ? <h1 className='alert'>Please select an option</h1> : ""}
        </div>
     }
     </div>
