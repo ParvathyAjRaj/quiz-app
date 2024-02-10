@@ -85,16 +85,21 @@ function App() {
     }
   }
 
+  function handleReload(){
+    window.location.reload();
+  }
+
   return (
     <div>
       {isQuizOver ? 
-      <h1>Score : {score}/{questions.length}</h1> 
+      <div>
+        <h1>Score : {score}/{questions.length}</h1> 
+        <button onClick={handleReload}>Start over</button>
+      </div>
       : 
       <div>
         <h1>{questions[qnIndex].question}</h1>
         {questions[qnIndex].options.map((option,optionIndex) => {
-          console.log(selectedOption);
-          console.log(option);
               return(
               <div>
                <label><input 
