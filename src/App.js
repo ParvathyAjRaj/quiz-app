@@ -56,19 +56,33 @@ function App() {
   ];
   
   const [score,setScore] = useState(0);
-  const [userAnswer,setUserAnswer] = useState("");
   const [isQuizOver,setIsQuizOver] = useState(false);
+  const [qnIndex,setQnIndex] = useState(0);
+  const [selectedOption,setSelectedOption] = useState(null);
+  const [isSetAlert,setAlert] = useState(false);
 
-  function handleSelect(eachOption,answer){
+  function handleSelect(eachOption,answer,optionIndex,e){
+    setAlert(false);
+    setSelectedOption(eachOption);
     if (eachOption === answer){
       let prevScore = score;
       setScore(prevScore + 1);
     }
   }
 
-  function handleSubmit(){
-    console.log(score);  
-    setIsQuizOver(true);
+  function handleSubmit(qnIndex){
+    if(selectedOption !== null){
+      let prevQnIndex = qnIndex;
+      setQnIndex(prevQnIndex + 1); 
+      if(qnIndex === questions.length-1){
+        setIsQuizOver(true);
+      }
+      // reset
+      setSelectedOption(null);
+    }
+    else{
+      setAlert(true);
+    }
   }
 
   return (
@@ -77,22 +91,24 @@ function App() {
       <h1>Score : {score}/{questions.length}</h1> 
       : 
       <div>
-      {questions.map((eachQn,qnIndex) => {  
-          return(
-            <div>
-              <h1>{eachQn.question}</h1>
-              {eachQn.options.map((eachOption,optionIndex) => {
+        <h1>{questions[qnIndex].question}</h1>
+        {questions[qnIndex].options.map((option,optionIndex) => {
+          console.log(selectedOption);
+          console.log(option);
               return(
               <div>
-               <input type="radio" name={qnIndex} onClick={() => handleSelect(eachOption,eachQn.answer)} value={userAnswer} key={optionIndex}/>
-                <label>{eachOption}</label>
+               <label><input 
+               type="radio" 
+               name={qnIndex} 
+               onChange={() => handleSelect(option,questions[qnIndex].answer,optionIndex)} 
+               key={optionIndex} 
+               checked={selectedOption === option}/>
+                {option}</label>
               </div>
               )
               })}
-            </div>
-          )
-      })}
-       <button onClick={() => handleSubmit()}>Submit</button>
+       <button onClick={() => handleSubmit(qnIndex)}>Submit</button>
+       {isSetAlert ? <h1>Please select an option</h1> : ""}
        </div>
     }
     </div>
